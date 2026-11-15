@@ -119,3 +119,67 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (min-width:640px){ .word{font-size:30px} .hero h1{font-size:23px} }
 .pill.lvl1{background:#dcfce7;color:#166534}.pill.lvl2{background:#fef3c7;color:#92400e}.pill.lvl3{background:#fee2e2;color:#991b1b}
 .grid>.plat{min-width:0}
+
+/* ---------- Παιχνίδι: Robo-Λαβύρινθος ---------- */
+.gbanner{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-radius:18px;padding:14px 16px;margin-bottom:6px;background:linear-gradient(135deg,#f00087,#b0007a 50%,#0b67b2);color:#fff;box-shadow:var(--shadow)}
+.gbanner .em{font-size:34px;line-height:1}
+.gbanner b{display:block;font-size:16px}
+.gbanner small{opacity:.9;font-size:12.5px}
+.gbanner .go{margin-left:auto;font-size:22px;font-weight:800}
+.glevels{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.glvl{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:left;box-shadow:var(--shadow)}
+.glvl .num{width:34px;height:34px;border-radius:10px;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:800;margin-bottom:8px}
+.glvl .nm{font-weight:700;font-size:14px;min-height:36px}
+.glvl .st{color:#f5b400;font-size:17px;letter-spacing:1px}
+.glvl.lock{opacity:.55;box-shadow:none}
+.glvl.lock .num{background:var(--chip)}
+.glvl .new{position:absolute;top:10px;right:10px;background:var(--pink);color:#fff;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:8px}
+.off{color:var(--line)}
+.gtip{background:var(--chip);border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.45;margin-bottom:12px}
+.gboard{position:relative;display:grid;margin:0 auto;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);max-width:100%}
+.gc{width:var(--cell);height:var(--cell);display:grid;place-items:center}
+.gc.f{background:var(--card);box-shadow:inset 0 0 0 1px var(--line)}
+.gc.w{background:#334155;background-image:linear-gradient(45deg,rgba(255,255,255,.05) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.05) 75%);background-size:12px 12px}
+.gc .it{font-size:calc(var(--cell) * .55);transition:transform .25s,opacity .25s}
+.gc .it.got{transform:scale(1.8);opacity:0}
+.gc.locked{animation:gblink .5s 2}
+@keyframes gblink{50%{background:#fecaca}}
+.grobot{position:absolute;left:0;top:0;width:var(--cell);height:var(--cell);padding:calc(var(--cell) * .08);transition:transform .38s ease-in-out;pointer-events:none}
+.gboard.fast .grobot{transition-duration:.15s}
+.grobot svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.grobot.crash svg{animation:gshake .35s 2}
+.grobot.win svg{animation:gjump .4s 2}
+@keyframes gshake{25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes gjump{50%{transform:scale(1.25)}}
+.gstatus{min-height:22px;text-align:center;font-weight:700;font-size:14px;margin:10px 0 2px;color:var(--muted)}
+.gstatus.bad{color:#dc2626}
+.gstatus.good{color:#16a34a}
+.gctl{display:flex;gap:8px;margin-top:8px}
+.gctl .gsq{flex:0 0 52px;font-size:20px}
+.btn:disabled{opacity:.5}
+.gpal{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.gblk{border:0;border-radius:10px;padding:9px 12px;font-weight:800;font-size:14px;color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.gblk.bF{background:#0b67b2}
+.gblk.bL{background:#7c3aed}
+.gblk.bR{background:#0891b2}
+.gblk.bloop{background:#f00087}
+.gblk.run,.glh.run{outline:3px solid #fbbf24;outline-offset:2px}
+.gprog{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;min-height:90px}
+.gprog.tgt{border-color:var(--blue)}
+.gph{flex:0 0 100%;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+.gmini{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:4px 9px;font-size:12.5px;font-weight:700;margin-left:6px}
+.ghint{color:var(--muted);font-size:13px;line-height:1.4;padding:4px 2px}
+.gloop{border-radius:12px;background:rgba(240,0,135,.08);border:2px solid rgba(240,0,135,.35);padding:0 8px 8px;flex:0 0 100%}
+.gloop.tgt{border-color:#f00087;background:rgba(240,0,135,.15)}
+.glh{display:flex;align-items:center;gap:8px;padding:8px 0;font-weight:800;color:#f00087;font-size:14px;border-radius:8px}
+.gcnt{border:0;background:#f00087;color:#fff;border-radius:8px;padding:4px 10px;font-weight:800}
+.gdel{margin-left:auto;border:0;background:transparent;color:var(--muted);font-size:16px;padding:2px 6px}
+.glb{display:flex;flex-wrap:wrap;gap:8px;padding-left:10px;border-left:3px solid #f00087}
+.gnote{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.45}
+.gover{position:fixed;inset:0;z-index:40;background:rgba(10,15,30,.55);display:none;align-items:center;justify-content:center;padding:16px}
+.gover.on{display:flex}
+.gcard{background:var(--card);border-radius:20px;padding:22px 18px;max-width:340px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.gcard h3{margin:4px 0}
+.gcard p{color:var(--muted);font-size:14px;margin:6px 0 10px}
+.gbig{font-size:48px}
+.gstars{font-size:36px;color:#f5b400;letter-spacing:4px}

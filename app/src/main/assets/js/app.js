@@ -173,6 +173,8 @@ function home() {
     "<p>Έτοιμα, πλήρη προγράμματα για LEGO, micro:bit, Maqueen, mBot, Arduino, ESP32 και Pico. Δουλεύουν χωρίς internet: τα ανοίγεις, τα αντιγράφεις, τα τρέχεις.</p>" +
     '<div class="stats"><span class="stat">' + ALL.length + ' κώδικες</span><span class="stat">' + (PLATFORMS.length - 1) +
     ' πλατφόρμες</span><span class="stat">Python · C++ · MakeCode</span></div></section>' +
+    '<button class="gbanner" data-go="#/game"><span class="em">🎮</span><span><b>Robo-Λαβύρινθος</b>' +
+    "<small>Παιχνίδι: προγραμμάτισε το ρομπότ να βρει τη σημαία</small></span><span class=\"go\">›</span></button>" +
     (rec.length ? '<div class="sec"><h2>Πρόσφατα</h2></div>' + listHTML(rec, true) : "") +
     '<div class="sec"><h2>Πλατφόρμες</h2><a href="#/all">Όλοι οι κώδικες ›</a></div>' +
     '<div class="grid">' + PLATFORMS.map(p =>
@@ -370,6 +372,12 @@ function about() {
   });
 }
 
+function game(lvl) {
+  setNav("");
+  if (!window.RZGame) return home();
+  window.RZGame.mount(MAIN, lvl, { esc: esc, store: store, toast: toast, highlight: highlight, codeTable: codeTable });
+}
+
 /* ---------- Αντιγραφή / Κοινοποίηση ---------- */
 function copyText(t) {
   if (window.Android && window.Android.copyText) { window.Android.copyText(t); return; }
@@ -411,6 +419,7 @@ function route() {
   else if (parts[0] === "all") allCodes(params.c || null);
   else if (parts[0] === "tools") tools();
   else if (parts[0] === "info") about();
+  else if (parts[0] === "game") game(parts[1] ? +parts[1] - 1 : null);
   else if (parts[0] === "q") search(params.q || "");
   else home();
   window.scrollTo(0, 0);
