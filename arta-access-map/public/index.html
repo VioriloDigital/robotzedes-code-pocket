@@ -19,6 +19,7 @@
   <header class="topbar">
     <h1 class="brand"><img class="brand-logo" src="icons/icon-192.png" alt="" width="36" height="36"> Προσβάσιμη Άρτα</h1>
     <nav class="actions" aria-label="Λογαριασμός">
+      <button type="button" id="btn-qr" class="btn" title="QR code για να ανοίξουν άλλοι την εφαρμογή" aria-label="QR code της εφαρμογής"><span aria-hidden="true">▦</span> QR</button>
       <button type="button" id="btn-add" class="btn primary">+ Πρόσθεσε σημείο</button>
       <span id="user-area"></span>
     </nav>
@@ -127,9 +128,26 @@
     <div id="mine-body"></div>
   </dialog>
 
+  <!-- QR code της εφαρμογής -->
+  <dialog id="dlg-qr" aria-labelledby="qr-title">
+    <form method="dialog" class="dlg-close no-print"><button aria-label="Κλείσιμο">×</button></form>
+    <div class="qr-sheet">
+      <h2 id="qr-title">Προσβάσιμη Άρτα</h2>
+      <p class="qr-sub">Σκάναρε με την κάμερα του κινητού για να ανοίξεις τον χάρτη με τα προσβάσιμα σημεία της Άρτας</p>
+      <div id="qr-box" class="qr-box"></div>
+      <p id="qr-url" class="qr-url"></p>
+    </div>
+    <p id="qr-note" class="muted small no-print"></p>
+    <div class="row no-print">
+      <button type="button" id="btn-qr-print" class="btn">🖨 Εκτύπωση</button>
+      <button type="button" id="btn-qr-png" class="btn">⬇ Λήψη εικόνας</button>
+    </div>
+  </dialog>
+
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
   <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="vendor/qrcode/qrcode.js"></script>
   <script src="js/common.js"></script>
   <script src="js/app.js"></script>
 </body>

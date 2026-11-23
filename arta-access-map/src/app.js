@@ -112,6 +112,7 @@ function createApp({
   // Στατικά αρχεία
   app.use(express.static(path.join(__dirname, '..', 'public')));
   app.use('/vendor/leaflet', express.static(path.dirname(require.resolve('leaflet/dist/leaflet.js'))));
+  app.use('/vendor/qrcode', express.static(path.dirname(require.resolve('qrcode-generator/qrcode.js'))));
 
   const upload = multer({
     storage: multer.memoryStorage(),

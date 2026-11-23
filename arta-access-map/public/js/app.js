@@ -26,6 +26,7 @@ async function init() {
   setupFilters();
   setupAuth();
   setupAdd();
+  setupQr();
   renderUser();
   await loadPoints();
   if (window.LocalBackend?.memoryMode) {
@@ -379,4 +380,77 @@ function setPickedLocation(lat, lng) {
     state.pickMarker = L.marker([lat, lng], { draggable: true, title: 'Νέο σημείο' }).addTo(map);
     state.pickMarker.on('dragend', () => { const ll = state.pickMarker.getLatLng(); setPickedLocation(ll.lat, ll.lng); });
   }
+}
+
+// ---------------- QR code της εφαρμογής ----------------
+/** Η διεύθυνση της εφαρμογής (χωρίς #σημείο και index.html). */
+function appUrl() {
+  return location.origin + location.pathname.replace(/index\.html$/, '');
+}
+
+function setupQr() {
+  const btn = $('#btn-qr');
+  // Μέσα στην εφαρμογή Android η διεύθυνση είναι εσωτερική: δεν έχει νόημα QR
+  if (window.AndroidApp || location.hostname === 'appassets.androidplatform.net' || typeof qrcode !== 'function') { btn.hidden = true; return; }
+  btn.addEventListener('click', openQr);
+  setupQrButtons();
+}
+
+function makeQr(text) {
+  const qr = qrcode(0, 'H'); // υψηλή διόρθωση λαθών: αντέχει το λογότυπο στη μέση
+  qr.addData(text, 'Byte');
+  qr.make();
+  return qr;
+}
+
+function openQr() {
+  const online = /^https?:$/.test(location.protocol);
+  const url = appUrl();
+  const box = $('#qr-box');
+  if (!online) {
+    fill(box);
+    $('#qr-url').textContent = '';
+    $('#qr-note').textContent = 'Το QR code φτιάχνεται όταν η εφαρμογή είναι ανεβασμένη στο ίντερνετ (π.χ. Cloudflare). Άνοιξε τη διεύθυνσή της και πάτα ξανά «QR».';
+    $('#btn-qr-print').hidden = $('#btn-qr-png').hidden = true;
+  } else {
+    const qr = makeQr(url);
+    box.innerHTML = qr.createSvgTag({ cellSize: 8, margin: 2, scalable: true, alt: `QR code: ${url}` });
+    const logo = document.querySelector('.brand-logo');
+    if (logo) box.append(h('img', { src: logo.src, alt: '', class: 'qr-logo' }));
+    $('#qr-url').textContent = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    $('#qr-note').textContent = 'Δείξε το στην οθόνη, εκτύπωσέ το (π.χ. αφίσα σε δημόσια κτίρια) ή κατέβασέ το ως εικόνα.';
+    $('#btn-qr-print').hidden = $('#btn-qr-png').hidden = false;
+  }
+  $('#dlg-qr').showModal();
+}
+
+function setupQrButtons() {
+  $('#btn-qr-print').addEventListener('click', () => window.print());
+  $('#btn-qr-png').addEventListener('click', async () => {
+    const url = appUrl();
+    const qr = makeQr(url);
+    const n = qr.getModuleCount();
+    const cell = 16, margin = 4 * cell, size = n * cell + margin * 2;
+    const W = size, H = size + 170;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, W, H);
+    g.fillStyle = '#0b5cad'; g.font = 'bold 54px system-ui, sans-serif'; g.textAlign = 'center';
+    g.fillText('Προσβάσιμη Άρτα', W / 2, 78);
+    g.fillStyle = '#111';
+    for (let r = 0; r < n; r++) for (let col = 0; col < n; col++) if (qr.isDark(r, col)) g.fillRect(margin + col * cell, 110 + margin + r * cell, cell, cell);
+    const logo = document.querySelector('.brand-logo');
+    if (logo) {
+      const L = Math.round(n * cell * 0.22), x = (W - L) / 2, y = 110 + (size - L) / 2;
+      g.fillStyle = '#fff'; g.fillRect(x - 8, y - 8, L + 16, L + 16);
+      try { g.drawImage(logo, x, y, L, L); } catch { /* χωρίς λογότυπο */ }
+    }
+    g.fillStyle = '#444'; g.font = '30px system-ui, sans-serif';
+    g.fillText(url.replace(/^https?:\/\//, '').replace(/\/$/, ''), W / 2, H - 30);
+    c.toBlob((blob) => {
+      const a = h('a', { href: URL.createObjectURL(blob), download: 'prosvasimi-arta-qr.png' });
+      document.body.append(a); a.click(); a.remove();
+    }, 'image/png');
+  });
 }

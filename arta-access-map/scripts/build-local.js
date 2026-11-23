@@ -14,6 +14,8 @@ fs.rmSync(outBase, { recursive: true, force: true });
 fs.cpSync(path.join(root, 'public'), out, { recursive: true });
 const lf = path.dirname(require.resolve('leaflet/dist/leaflet.js'));
 for (const f of ['leaflet.js', 'leaflet.css', 'images']) fs.cpSync(path.join(lf, f), path.join(out, 'vendor', 'leaflet', f), { recursive: true });
+fs.mkdirSync(path.join(out, 'vendor', 'qrcode'), { recursive: true });
+fs.copyFileSync(require.resolve('qrcode-generator/qrcode.js'), path.join(out, 'vendor', 'qrcode', 'qrcode.js'));
 
 // Τοπικό «backend» με ενσωματωμένες ρυθμίσεις και κώδικα OpenStreetMap (από τις ίδιες πηγές με τον server)
 const config = { categories: CATEGORIES, features: FEATURES, levels: LEVELS, bounds: BOUNDS, center: CENTER };
@@ -45,6 +47,7 @@ for (const page of ['index.html', 'admin.html']) {
     ['<link rel="stylesheet" href="vendor/leaflet/leaflet.css">', `<style>${leafletCss}</style>`],
     ['<link rel="stylesheet" href="css/app.css">', `<style>${read('css/app.css')}</style>`],
     ['<script src="vendor/leaflet/leaflet.js"></script>', `<script>${safeJs(read('vendor/leaflet/leaflet.js'))}\n${iconFix}</script>`],
+    ...(page === 'index.html' ? [['<script src="vendor/qrcode/qrcode.js"></script>', `<script>${safeJs(read('vendor/qrcode/qrcode.js'))}</script>`]] : []),
     ['<script src="js/common.js"></script>', `<script>${safeJs(read('js/local-backend.js'))}</script>\n  <script>${safeJs(read('js/common.js'))}</script>`],
     [page === 'index.html' ? '<script src="js/app.js"></script>' : '<script src="js/admin.js"></script>',
       `<script>${safeJs(read(page === 'index.html' ? 'js/app.js' : 'js/admin.js'))}</script>`],

@@ -199,3 +199,25 @@ th { font-size: .9rem; color: var(--muted); }
   background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius);
   box-shadow: var(--shadow); padding: 12px 16px; text-align: center; font-size: .95rem; pointer-events: none; opacity: .95;
 }
+
+/* QR code */
+.qr-sheet { text-align: center; }
+.qr-sheet h2 { padding-right: 0; color: var(--primary); margin-bottom: 4px; }
+.qr-sub { margin: 0 auto 12px; max-width: 34ch; color: var(--muted); }
+.qr-box { position: relative; width: min(300px, 75vw); margin: 0 auto; background: #fff; border-radius: 8px; }
+.qr-box svg { display: block; width: 100%; height: auto; }
+.qr-logo { position: absolute; left: 50%; top: 50%; width: 22%; height: 22%; transform: translate(-50%, -50%);
+  border-radius: 18%; outline: 5px solid #fff; background: #fff; }
+.qr-url { font-weight: 600; word-break: break-all; margin: 10px 0 4px; }
+@media print {
+  @page { margin: 15mm; }
+  body * { visibility: hidden !important; }
+  #dlg-qr, #dlg-qr * { visibility: visible !important; }
+  #dlg-qr { position: fixed; inset: 0; margin: auto; width: 100%; max-width: none; max-height: none; box-shadow: none; border: 0; }
+  #dlg-qr::backdrop { background: #fff; }
+  #dlg-qr .no-print { display: none !important; }
+  .qr-box { width: 120mm; }
+  .qr-sheet h2 { font-size: 34pt; color: #0b5cad !important; }
+  .qr-sub { font-size: 16pt; max-width: none; color: #333 !important; }
+  .qr-url { font-size: 16pt; }
+}
